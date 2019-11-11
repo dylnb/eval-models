@@ -1,0 +1,162 @@
+{
+  "transform": [
+    {
+      "as": "y",
+      "calculate": "exp(-pow(datum.w - datum.mu,2)/(2*pow(1.3,2)))/1.3*sqrt(2*PI)"
+    }
+  ],
+  "spacing": 50,
+  "hconcat": [
+    {
+      "transform": [{"as": "den", "calculate": "datum.w - datum.mu >= -2"}],
+      "height": 40,
+      "mark": "bar",
+      "width": 110,
+      "title": "[[Tall]] := ht ≥ mu - 2",
+      "encoding": {
+        "color": {"field": "den", "type": "nominal", "title": "denotation"},
+        "row": {
+          "field": "mu",
+          "header": {"labelFontSize": 0},
+          "type": "nominal"
+        },
+        "x": {"field": "w", "title": "ht", "type": "nominal"},
+        "y": {"field": "y", "title": "", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [{"as": "den", "calculate": "datum.w - datum.mu >= -1"}],
+      "height": 40,
+      "mark": "bar",
+      "width": 110,
+      "title": "[[Tall]] := ht ≥ mu - 1",
+      "encoding": {
+        "color": {"field": "den", "type": "nominal"},
+        "row": {
+          "field": "mu",
+          "header": {"labelFontSize": 0},
+          "title": "",
+          "type": "nominal"
+        },
+        "x": {"field": "w", "title": "ht", "type": "nominal"},
+        "y": {"field": "y", "title": "", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [{"as": "den", "calculate": "datum.w - datum.mu >= 0"}],
+      "height": 40,
+      "mark": "bar",
+      "width": 110,
+      "title": "[[Tall]] := ht ≥ mu + 0",
+      "encoding": {
+        "color": {"field": "den", "type": "nominal"},
+        "row": {
+          "field": "mu",
+          "header": {"labelFontSize": 0},
+          "title": "",
+          "type": "nominal"
+        },
+        "x": {"field": "w", "title": "ht", "type": "nominal"},
+        "y": {"field": "y", "title": "", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [{"as": "den", "calculate": "datum.w - datum.mu >= 1"}],
+      "height": 40,
+      "mark": "bar",
+      "width": 110,
+      "title": "[[Tall]] := ht ≥ mu + 1",
+      "encoding": {
+        "color": {"field": "den", "type": "nominal"},
+        "row": {
+          "field": "mu",
+          "header": {"labelFontSize": 0},
+          "title": "",
+          "type": "nominal"
+        },
+        "x": {"field": "w", "title": "ht", "type": "nominal"},
+        "y": {"field": "y", "title": "", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [{"as": "den", "calculate": "datum.w - datum.mu >= 2"}],
+      "height": 40,
+      "mark": "bar",
+      "width": 110,
+      "title": "[[Tall]] := ht ≥ mu + 2",
+      "encoding": {
+        "color": {"field": "den", "type": "nominal"},
+        "row": {
+          "field": "mu",
+          "header": {"labelFontSize": 0},
+          "title": "",
+          "type": "nominal"
+        },
+        "x": {"field": "w", "title": "ht", "type": "nominal"},
+        "y": {"field": "y", "title": "", "type": "quantitative"}
+      }
+    }
+  ],
+  "data": {
+    "values": [
+      {"w": 1, "mu": 4},
+      {"w": 2, "mu": 4},
+      {"w": 3, "mu": 4},
+      {"w": 4, "mu": 4},
+      {"w": 5, "mu": 4},
+      {"w": 6, "mu": 4},
+      {"w": 7, "mu": 4},
+      {"w": 8, "mu": 4},
+      {"w": 9, "mu": 4},
+      {"w": 10, "mu": 4},
+      {"w": 11, "mu": 4},
+      {"w": 1, "mu": 5},
+      {"w": 2, "mu": 5},
+      {"w": 3, "mu": 5},
+      {"w": 4, "mu": 5},
+      {"w": 5, "mu": 5},
+      {"w": 6, "mu": 5},
+      {"w": 7, "mu": 5},
+      {"w": 8, "mu": 5},
+      {"w": 9, "mu": 5},
+      {"w": 10, "mu": 5},
+      {"w": 11, "mu": 5},
+      {"w": 1, "mu": 6},
+      {"w": 2, "mu": 6},
+      {"w": 3, "mu": 6},
+      {"w": 4, "mu": 6},
+      {"w": 5, "mu": 6},
+      {"w": 6, "mu": 6},
+      {"w": 7, "mu": 6},
+      {"w": 8, "mu": 6},
+      {"w": 9, "mu": 6},
+      {"w": 10, "mu": 6},
+      {"w": 11, "mu": 6},
+      {"w": 1, "mu": 7},
+      {"w": 2, "mu": 7},
+      {"w": 3, "mu": 7},
+      {"w": 4, "mu": 7},
+      {"w": 5, "mu": 7},
+      {"w": 6, "mu": 7},
+      {"w": 7, "mu": 7},
+      {"w": 8, "mu": 7},
+      {"w": 9, "mu": 7},
+      {"w": 10, "mu": 7},
+      {"w": 11, "mu": 7},
+      {"w": 1, "mu": 8},
+      {"w": 2, "mu": 8},
+      {"w": 3, "mu": 8},
+      {"w": 4, "mu": 8},
+      {"w": 5, "mu": 8},
+      {"w": 6, "mu": 8},
+      {"w": 7, "mu": 8},
+      {"w": 8, "mu": 8},
+      {"w": 9, "mu": 8},
+      {"w": 10, "mu": 8},
+      {"w": 11, "mu": 8}
+    ]
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "description": "Plots a function using a generated sequence.",
+  "config": {}
+}
