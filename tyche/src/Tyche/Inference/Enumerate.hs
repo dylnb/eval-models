@@ -23,6 +23,13 @@ enum m = do x <- runFreeT m
 enumD :: Ord a => Model a -> IO (Dist a)
 enumD m = fromList <$> enum m
 
+enumM :: Ord a => Model a -> IO (Model a)
+enumM m = enumD m >>= return . belief . justSupport
+  where
+    justSupport dist = case dist of
+      Discrete assoc -> Discrete $ filter (\(x,p) -> p > 0) assoc
+      d              -> d
+
 memoize :: (Ord k, Ord a) => IORef ((Int,Map.Map k (Dist a))) -> (k -> Model a) -> k -> IO (Dist a)
 memoize ref f k = do
   (i,cache) <- readIORef ref
