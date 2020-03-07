@@ -58,7 +58,7 @@ sdBarFromDist sds m =
   in toVegaLite [description "", dvals [], mark Bar [MColor "firebrick", MOpacity 0.75], enc []]
 
 sidewaysDists :: [VegaLite] -> VegaLite
-sidewaysDists ms = toVegaLite [spacing 50, hConcat (fromVL <$> ms)]
+sidewaysDists ms = toVegaLite [spacing 50, resolve (resolution (RScale [(ChColor, Independent)]) []), hConcat (fromVL <$> ms)]
 
 titled :: String -> VegaLite -> VegaLite
 titled s v = toVegaLite [title (pack s) [], layer [fromVL v]]
