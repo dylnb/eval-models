@@ -13123,15 +13123,69 @@ div#notebook {
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kt">:</span><span class="n">ext</span> <span class="kt">TypeSynonymInstances</span>
+<span class="kt">:</span><span class="n">ext</span> <span class="kt">FlexibleInstances</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">import</span> <span class="nn">Data.Text</span> <span class="p">(</span><span class="nf">pack</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.Tuple.Extra</span> <span class="p">(</span><span class="nf">first</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.List.Extra</span> <span class="p">(</span><span class="nf">dropEnd</span><span class="p">,</span> <span class="nf">enumerate</span><span class="p">)</span>
+<span class="c1">-- import Control.Monad.Trans.State</span>
+<span class="kr">import</span> <span class="nn">Control.Monad.Trans.Class</span> <span class="p">(</span><span class="nf">lift</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.IORef</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Data.Map</span> <span class="k">as</span> <span class="n">Map</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">import</span> <span class="nn">Utils</span>
+<span class="kr">import</span> <span class="nn">Tyche.Model</span>
+<span class="kr">import</span> <span class="nn">Tyche.Dist</span>
+<span class="kr">import</span> <span class="nn">Tyche.Prelude</span>
+<span class="kr">import</span> <span class="nn">Tyche.Prob</span>
+<span class="kr">import</span> <span class="nn">Tyche.Inference.Enumerate</span>
+<span class="c1">-- import qualified System.Random.MWC.Probability as MWC</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">import</span> <span class="nn">Graphics.Vega.VegaLite</span> <span class="k">hiding</span> <span class="p">(</span><span class="nf">filter</span><span class="p">,</span> <span class="nf">lookup</span><span class="p">,</span> <span class="nf">repeat</span><span class="p">,</span> <span class="kt">FontWeight</span><span class="p">(</span><span class="kt">Normal</span><span class="p">))</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Graphics.Vega.VegaLite</span> <span class="k">as</span> <span class="n">VL</span> <span class="p">(</span><span class="n">filter</span><span class="p">,</span> <span class="n">lookup</span><span class="p">,</span> <span class="n">repeat</span><span class="p">,</span> <span class="kt">FontWeight</span><span class="p">(</span><span class="kt">Normal</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13157,9 +13211,33 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">data</span> <span class="kt">World</span> <span class="ow">=</span> <span class="kt">World</span> <span class="p">{</span><span class="n">label</span> <span class="ow">::</span> <span class="kt">String</span><span class="p">,</span> <span class="n">ht</span> <span class="ow">::</span> <span class="kt">Int</span><span class="p">}</span> <span class="kr">deriving</span> <span class="kt">Eq</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">instance</span> <span class="kt">Ord</span> <span class="kt">World</span> <span class="kr">where</span>
+  <span class="n">w</span> <span class="o">&lt;=</span> <span class="n">w&#39;</span> <span class="ow">=</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">&lt;=</span> <span class="n">ht</span> <span class="n">w&#39;</span>
+
+<span class="kr">instance</span> <span class="kt">Show</span> <span class="kt">World</span> <span class="kr">where</span>
+  <span class="n">show</span> <span class="p">(</span><span class="kt">World</span> <span class="n">l</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">l</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13171,9 +13249,30 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">type</span> <span class="kt">Index</span> <span class="ow">=</span> <span class="p">(</span><span class="kt">World</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">instance</span> <span class="cm">{-# OVERLAPPING #-}</span> <span class="kt">Show</span> <span class="kt">Index</span> <span class="kr">where</span>
+  <span class="n">show</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">show</span> <span class="n">w</span> <span class="o">++</span> <span class="s">&quot;;&quot;</span> <span class="o">++</span> <span class="n">show</span> <span class="n">i</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13185,6 +13284,16 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">type</span> <span class="kt">Prop</span> <span class="ow">=</span> <span class="p">[</span><span class="kt">Index</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13196,6 +13305,17 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">heights</span> <span class="ow">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">..</span> <span class="mi">11</span><span class="p">]</span>
+<span class="nf">universe</span> <span class="ow">=</span> <span class="p">[</span><span class="kt">World</span> <span class="p">(</span><span class="s">&quot;j&quot;</span> <span class="o">++</span> <span class="n">show</span> <span class="n">h</span><span class="p">)</span> <span class="n">h</span> <span class="o">|</span> <span class="n">h</span> <span class="ow">&lt;-</span> <span class="n">heights</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13207,6 +13327,18 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">sigma</span> <span class="ow">=</span> <span class="mi">3</span> <span class="ow">::</span> <span class="kt">Int</span>
+<span class="nf">htrange</span> <span class="ow">=</span> <span class="p">[</span><span class="o">-</span><span class="n">sigma</span> <span class="o">..</span> <span class="n">sigma</span><span class="p">]</span>
+<span class="nf">indices</span> <span class="ow">=</span> <span class="p">[(</span><span class="n">w</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span> <span class="o">|</span> <span class="n">mu</span> <span class="ow">&lt;-</span> <span class="n">drop</span> <span class="n">sigma</span> <span class="o">.</span> <span class="n">dropEnd</span> <span class="n">sigma</span> <span class="o">$</span> <span class="n">heights</span><span class="p">,</span> <span class="n">w</span> <span class="ow">&lt;-</span> <span class="n">universe</span><span class="p">,</span> <span class="n">abs</span> <span class="p">(</span><span class="n">ht</span> <span class="n">w</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">sigma</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13225,6 +13357,19 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">data</span> <span class="kt">Utt</span> <span class="ow">=</span> <span class="kt">UNone</span> <span class="o">|</span> <span class="kt">UTall</span> <span class="o">|</span> <span class="kt">UShrt</span>
+  <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Eq</span><span class="p">,</span> <span class="kt">Show</span><span class="p">,</span> <span class="kt">Ord</span><span class="p">,</span> <span class="kt">Enum</span><span class="p">,</span> <span class="kt">Bounded</span><span class="p">)</span>
+
+<span class="nf">utterances</span> <span class="ow">=</span> <span class="n">enumerate</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13236,9 +13381,34 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">data</span> <span class="kt">Lexicon</span> <span class="ow">=</span> <span class="kt">Lex</span> <span class="p">{</span><span class="n">lexID</span> <span class="ow">::</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">den</span> <span class="ow">::</span> <span class="kt">Utt</span> <span class="ow">-&gt;</span> <span class="kt">Prop</span><span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">instance</span> <span class="kt">Show</span> <span class="kt">Lexicon</span> <span class="kr">where</span>
+  <span class="n">show</span> <span class="p">(</span><span class="kt">Lex</span> <span class="kr">_</span> <span class="n">f</span><span class="p">)</span> <span class="ow">=</span> <span class="s">&quot;C = &quot;</span> <span class="o">++</span> <span class="n">show</span> <span class="p">(</span><span class="n">f</span> <span class="kt">UNone</span><span class="p">)</span> <span class="o">++</span> <span class="s">&quot;; E = &quot;</span> <span class="o">++</span> <span class="n">show</span> <span class="p">(</span><span class="n">f</span> <span class="kt">UTall</span><span class="p">)</span>
+<span class="kr">instance</span> <span class="kt">Eq</span> <span class="kt">Lexicon</span> <span class="kr">where</span>
+  <span class="p">(</span><span class="kt">Lex</span> <span class="n">m</span> <span class="kr">_</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="kt">Lex</span> <span class="n">n</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">m</span> <span class="o">==</span> <span class="n">n</span>
+<span class="kr">instance</span> <span class="kt">Ord</span> <span class="kt">Lexicon</span> <span class="kr">where</span>
+  <span class="p">(</span><span class="kt">Lex</span> <span class="n">m</span> <span class="kr">_</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="kt">Lex</span> <span class="n">n</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="n">n</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13249,6 +13419,18 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="c1">-- Initialize reference cell for storing results to share within and between computations</span>
+<span class="kr">type</span> <span class="kt">Cache</span> <span class="ow">=</span> <span class="kt">IORef</span> <span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="kt">Map</span> <span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="kt">Utt</span><span class="p">,</span> <span class="kt">Lexicon</span><span class="p">)</span> <span class="p">(</span><span class="kt">Dist</span> <span class="kt">Index</span><span class="p">))</span>
+<span class="nf">cacheRef</span> <span class="ow">&lt;-</span> <span class="n">newIORef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="kt">Cache</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13264,6 +13446,17 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">data</span> <span class="kt">Priors</span> <span class="ow">=</span> <span class="kt">Priors</span> <span class="p">{</span><span class="n">ip</span> <span class="ow">::</span> <span class="kt">Model</span> <span class="kt">Index</span><span class="p">,</span> <span class="n">up</span> <span class="ow">::</span> <span class="kt">Model</span> <span class="kt">Utt</span><span class="p">,</span> <span class="n">lp</span> <span class="ow">::</span> <span class="kt">Model</span> <span class="kt">Lexicon</span><span class="p">}</span>
+<span class="kr">type</span> <span class="kt">Agent</span> <span class="n">k</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Priors</span> <span class="ow">-&gt;</span> <span class="kt">Cache</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Int</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="kt">Lexicon</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">Model</span> <span class="n">a</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13278,6 +13471,39 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">alpha</span> <span class="ow">::</span> <span class="kt">Double</span>
+<span class="nf">alpha</span> <span class="ow">=</span> <span class="mi">4</span>
+
+<span class="nf">speaker</span> <span class="ow">::</span> <span class="kt">Agent</span> <span class="kt">Index</span> <span class="kt">Utt</span>
+<span class="nf">speaker</span> <span class="n">priors</span> <span class="n">ref</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="ow">=</span>
+  <span class="kr">do</span> <span class="n">u</span> <span class="ow">&lt;-</span> <span class="n">up</span> <span class="n">priors</span>
+     <span class="kr">if</span> <span class="n">null</span> <span class="p">(</span><span class="n">den</span> <span class="n">l</span> <span class="n">u</span><span class="p">)</span>
+       <span class="kr">then</span> <span class="n">weight</span> <span class="n">negInf</span>
+       <span class="kr">else</span> <span class="kr">do</span> <span class="n">lnr</span> <span class="ow">&lt;-</span> <span class="n">lift</span> <span class="o">$</span> <span class="n">memoize</span> <span class="n">ref</span> <span class="p">(</span><span class="n">fmap</span> <span class="n">fst</span> <span class="o">.</span> <span class="n">listener</span> <span class="n">priors</span> <span class="n">ref</span><span class="p">)</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+               <span class="n">weight</span> <span class="o">$</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">logProb</span> <span class="n">lnr</span> <span class="n">i</span>
+     <span class="n">return</span> <span class="n">u</span>
+
+<span class="nf">listener</span> <span class="ow">::</span> <span class="kt">Agent</span> <span class="kt">Utt</span> <span class="p">(</span><span class="kt">Index</span><span class="p">,</span> <span class="kt">Lexicon</span><span class="p">)</span>
+<span class="nf">listener</span> <span class="n">priors</span> <span class="n">ref</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">=</span>
+      <span class="kr">do</span> <span class="n">index</span>  <span class="ow">&lt;-</span> <span class="n">ip</span> <span class="n">priors</span>
+         <span class="n">interp</span> <span class="ow">&lt;-</span> <span class="kr">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="kr">then</span> <span class="n">lp</span> <span class="n">priors</span> <span class="kr">else</span> <span class="n">return</span> <span class="n">l</span>
+         <span class="n">spr</span>    <span class="ow">&lt;-</span> <span class="n">lift</span> <span class="o">.</span> <span class="n">enumD</span> <span class="o">$</span> <span class="n">speaker</span> <span class="n">priors</span> <span class="n">ref</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">index</span><span class="p">,</span><span class="n">interp</span><span class="p">)</span>
+         <span class="n">observe</span> <span class="n">spr</span> <span class="n">u</span>
+         <span class="n">return</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">interp</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span>
+      <span class="kr">do</span> <span class="n">index</span>  <span class="ow">&lt;-</span> <span class="n">ip</span> <span class="n">priors</span>
+         <span class="n">condition</span> <span class="p">(</span><span class="n">index</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="n">den</span> <span class="n">l</span> <span class="n">u</span><span class="p">)</span>
+         <span class="n">return</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13296,6 +13522,20 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">indicesPriorFlat</span> <span class="ow">::</span> <span class="kt">Model</span> <span class="kt">Index</span>
+<span class="nf">indicesPriorFlat</span> <span class="ow">=</span>
+  <span class="kr">do</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">&lt;-</span> <span class="n">unif</span> <span class="n">indices</span>
+     <span class="n">observe</span> <span class="p">(</span><span class="kt">Normal</span> <span class="mi">0</span> <span class="mf">1.85</span><span class="p">)</span> <span class="p">(</span><span class="n">fromIntegral</span> <span class="o">$</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+     <span class="n">return</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13307,11 +13547,25 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">vlShow</span> <span class="o">.</span> <span class="n">margHeatFromDist</span> <span class="o">&lt;$&gt;</span> <span class="n">enumD</span> <span class="p">(</span><span class="n">first</span> <span class="n">ht</span> <span class="o">&lt;$&gt;</span> <span class="n">indicesPriorFlat</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13335,9 +13589,33 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">cost</span> <span class="ow">::</span> <span class="kt">Utt</span> <span class="ow">-&gt;</span> <span class="kt">Double</span>
+<span class="nf">cost</span> <span class="kt">UNone</span> <span class="ow">=</span> <span class="mi">0</span>
+<span class="nf">cost</span> <span class="kt">UTall</span> <span class="ow">=</span> <span class="mi">1</span>
+<span class="nf">cost</span> <span class="kt">UShrt</span> <span class="ow">=</span> <span class="mi">2</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">utterancePrior1</span> <span class="ow">::</span> <span class="kt">Model</span> <span class="kt">Utt</span>
+<span class="nf">utterancePrior1</span> <span class="ow">=</span> <span class="n">belief</span> <span class="o">.</span> <span class="n">fromList</span> <span class="o">$</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">cost</span> <span class="n">u</span><span class="p">)</span> <span class="o">|</span> <span class="n">u</span> <span class="ow">&lt;-</span> <span class="n">utterances</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13349,11 +13627,28 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">vlShow</span> <span class="o">.</span> <span class="n">sidewaysDists</span> <span class="o">&lt;$&gt;</span> <span class="n">sequence</span>
+  <span class="p">[</span> <span class="n">titled</span> <span class="s">&quot;Utterence prefs&quot;</span> <span class="o">.</span> <span class="n">barFromDist</span> <span class="o">&lt;$&gt;</span> <span class="n">enumD</span> <span class="n">utterancePrior1</span>
+  <span class="p">,</span> <span class="n">titled</span> <span class="s">&quot;Prefs if forced to speak&quot;</span> <span class="o">.</span> <span class="n">barFromDist</span> <span class="o">&lt;$&gt;</span> <span class="n">enumD</span> <span class="p">(</span><span class="n">utterancePrior1</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">u</span> <span class="ow">-&gt;</span> <span class="n">condition</span> <span class="p">(</span><span class="n">u</span> <span class="o">/=</span> <span class="kt">UNone</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">return</span> <span class="n">u</span><span class="p">)</span>
+  <span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13396,14 +13691,50 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">den0</span> <span class="ow">::</span> <span class="kt">Lexicon</span>
+<span class="nf">den0</span> <span class="ow">=</span> <span class="kt">Lex</span> <span class="mi">0</span> <span class="n">f</span>
+  <span class="kr">where</span> <span class="n">f</span> <span class="kr">_</span> <span class="ow">=</span> <span class="n">indices</span>
+
+<span class="nf">posDens</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Lexicon</span><span class="p">]</span>
+<span class="nf">posDens</span> <span class="ow">=</span>
+  <span class="kr">do</span> <span class="n">d</span> <span class="ow">&lt;-</span> <span class="n">htrange</span>
+     <span class="kr">let</span> <span class="n">f</span> <span class="kt">UNone</span> <span class="ow">=</span> <span class="n">indices</span>
+         <span class="n">f</span> <span class="kt">UTall</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="n">indices</span>
+         <span class="n">f</span> <span class="kt">UShrt</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="n">indices</span>
+     <span class="n">return</span> <span class="p">(</span><span class="kt">Lex</span> <span class="n">d</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="kr">import</span> <span class="nn">IHaskell.Display</span> <span class="p">(</span><span class="kt">Display</span><span class="p">(</span><span class="o">..</span><span class="p">),</span> <span class="nf">javascript</span><span class="p">,</span> <span class="nf">vegalite</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">System.IO</span>
+<span class="nf">readFile</span> <span class="s">&quot;posDens.vl&quot;</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">js</span> <span class="ow">-&gt;</span> <span class="n">pure</span> <span class="p">(</span><span class="kt">Display</span> <span class="p">[</span><span class="n">vegalite</span> <span class="n">js</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13419,6 +13750,17 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">infoBaseline</span> <span class="ow">=</span> <span class="kt">Priors</span> <span class="n">indicesPriorFlat</span> <span class="n">utterancePrior1</span> <span class="p">(</span><span class="n">unif</span> <span class="p">[</span><span class="n">den0</span><span class="p">])</span>
+<span class="nf">infoLUM</span> <span class="ow">=</span> <span class="n">infoBaseline</span> <span class="p">{</span><span class="n">lp</span> <span class="ow">=</span> <span class="n">unif</span> <span class="n">posDens</span><span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13441,11 +13783,42 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">writeIORef</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span>
+
+<span class="nf">mkGraph</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">heat</span> <span class="ow">&lt;-</span> <span class="n">enumD</span> <span class="p">(</span><span class="n">first</span> <span class="n">ht</span> <span class="o">.</span> <span class="n">fst</span> <span class="o">&lt;$&gt;</span> <span class="n">m</span><span class="p">)</span>
+  <span class="n">bar</span>  <span class="ow">&lt;-</span> <span class="n">enumD</span> <span class="p">(</span><span class="n">lexID</span>    <span class="o">.</span> <span class="n">snd</span> <span class="o">&lt;$&gt;</span> <span class="n">m</span><span class="p">)</span>
+  <span class="n">return</span> <span class="o">$</span> <span class="n">toVegaLite</span>
+    <span class="p">[</span> <span class="n">center</span> <span class="kt">True</span>
+    <span class="p">,</span> <span class="n">vConcat</span> <span class="p">[</span><span class="n">fromVL</span> <span class="p">(</span><span class="n">margHeatFromDist</span> <span class="n">heat</span><span class="p">),</span> <span class="n">fromVL</span> <span class="p">(</span><span class="n">sdBarFromDist</span> <span class="n">htrange</span> <span class="n">bar</span><span class="p">)]</span>
+    <span class="p">,</span> <span class="n">title</span> <span class="p">(</span><span class="n">pack</span> <span class="n">t</span><span class="p">)</span> <span class="kt">[]</span>
+    <span class="p">]</span>
+    
+<span class="nf">vlShow</span> <span class="o">.</span> <span class="n">sidewaysDists</span> <span class="o">&lt;$&gt;</span> <span class="n">traverse</span> <span class="n">mkGraph</span>
+  <span class="p">[</span> <span class="p">(</span><span class="s">&quot;Literal listener (L0)&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L0 + lex. uncertainty&quot;</span><span class="p">,</span> <span class="n">lp</span> <span class="n">infoLUM</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">l</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L1 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L2 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L3 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13473,11 +13846,33 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">writeIORef</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span>
+
+<span class="nf">vlShow</span> <span class="o">.</span> <span class="n">sidewaysDists</span> <span class="o">&lt;$&gt;</span> <span class="n">traverse</span> <span class="n">mkGraph</span>
+  <span class="p">[</span> <span class="p">(</span><span class="s">&quot;Literal listener (L0)&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L0 + lex. uncertainty&quot;</span><span class="p">,</span> <span class="n">lp</span> <span class="n">infoLUM</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">l</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L1 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L2 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L3 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUM</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">den0</span><span class="p">))</span>
+  <span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13510,11 +13905,25 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">readFile</span> <span class="s">&quot;exactDens.vl&quot;</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">js</span> <span class="ow">-&gt;</span> <span class="n">pure</span> <span class="p">(</span><span class="kt">Display</span> <span class="p">[</span><span class="n">vegalite</span> <span class="n">js</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13530,6 +13939,27 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">denExact0</span> <span class="ow">=</span> <span class="kt">Lex</span> <span class="mi">0</span> <span class="n">f</span>
+  <span class="kr">where</span> <span class="n">f</span> <span class="kt">UNone</span> <span class="ow">=</span> <span class="n">indices</span>
+        <span class="n">f</span> <span class="kt">UTall</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span> <span class="n">indices</span>
+        <span class="n">f</span> <span class="kt">UShrt</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span> <span class="n">indices</span>
+
+<span class="nf">exactDens</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Lexicon</span><span class="p">]</span>
+<span class="nf">exactDens</span> <span class="ow">=</span> 
+  <span class="kr">do</span> <span class="n">d</span> <span class="ow">&lt;-</span> <span class="n">htrange</span>
+     <span class="kr">let</span> <span class="n">f</span> <span class="kt">UNone</span> <span class="ow">=</span> <span class="n">indices</span>
+         <span class="n">f</span> <span class="kt">UTall</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">6</span> <span class="o">&amp;&amp;</span> <span class="mi">6</span> <span class="o">&gt;=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="n">indices</span>
+         <span class="n">f</span> <span class="kt">UShrt</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">6</span> <span class="o">&amp;&amp;</span> <span class="mi">6</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="n">indices</span>
+     <span class="n">return</span> <span class="p">(</span><span class="kt">Lex</span> <span class="n">d</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13543,6 +13973,16 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">infoLUMExact</span> <span class="ow">=</span> <span class="n">infoBaseline</span> <span class="p">{</span><span class="n">lp</span> <span class="ow">=</span> <span class="n">unif</span> <span class="n">exactDens</span><span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13556,11 +13996,33 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">writeIORef</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span>
+ 
+<span class="nf">vlShow</span> <span class="o">.</span> <span class="n">sidewaysDists</span> <span class="o">&lt;$&gt;</span> <span class="n">traverse</span> <span class="n">mkGraph</span>
+  <span class="p">[</span> <span class="p">(</span><span class="s">&quot;Literal listener (L0)&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L0 + lex. uncertainty&quot;</span><span class="p">,</span> <span class="n">lp</span> <span class="n">infoLUMExact</span><span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">l</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L1 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L2 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L3 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13588,11 +14050,33 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">writeIORef</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span>
+
+<span class="nf">vlShow</span> <span class="o">.</span> <span class="n">sidewaysDists</span> <span class="o">&lt;$&gt;</span> <span class="n">traverse</span> <span class="n">mkGraph</span>
+  <span class="p">[</span> <span class="p">(</span><span class="s">&quot;Literal listener (L0)&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L0 + lex. uncertainty&quot;</span><span class="p">,</span> <span class="n">lp</span> <span class="n">infoLUMExact</span><span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">l</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L1 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L2 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L3 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMExact</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denExact0</span><span class="p">))</span>
+  <span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13625,6 +14109,30 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">denEq0</span> <span class="n">billht</span> <span class="ow">=</span> <span class="kt">Lex</span> <span class="mi">0</span> <span class="n">f</span>
+  <span class="kr">where</span> <span class="n">f</span> <span class="kt">UNone</span> <span class="ow">=</span> <span class="n">indices</span>
+        <span class="n">f</span> <span class="kt">UTall</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="n">billht</span><span class="p">)</span> <span class="n">indices</span>
+        <span class="n">f</span> <span class="kt">UShrt</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="n">billht</span><span class="p">)</span> <span class="n">indices</span>
+
+<span class="nf">htsbill</span> <span class="ow">=</span> <span class="p">[</span><span class="mi">4</span> <span class="o">..</span> <span class="mi">8</span><span class="p">]</span>
+
+<span class="nf">eqDens</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Lexicon</span><span class="p">]</span>
+<span class="nf">eqDens</span> <span class="ow">=</span> 
+  <span class="kr">do</span> <span class="n">d</span> <span class="ow">&lt;-</span> <span class="n">htrange</span>
+     <span class="n">b</span> <span class="ow">&lt;-</span> <span class="n">htsbill</span>
+     <span class="kr">let</span> <span class="n">f</span> <span class="kt">UNone</span> <span class="ow">=</span> <span class="n">indices</span>
+         <span class="n">f</span> <span class="kt">UTall</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="n">b</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">&gt;=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="n">indices</span>
+         <span class="n">f</span> <span class="kt">UShrt</span> <span class="ow">=</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">ht</span> <span class="n">w</span> <span class="o">==</span> <span class="n">b</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="n">indices</span>
+     <span class="n">return</span> <span class="p">(</span><span class="kt">Lex</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13638,6 +14146,16 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">infoLUMEq</span> <span class="ow">=</span> <span class="n">infoBaseline</span> <span class="p">{</span><span class="n">lp</span> <span class="ow">=</span> <span class="n">unif</span> <span class="n">eqDens</span><span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13651,11 +14169,42 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">writeIORef</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span>
+
+<span class="nf">mkEqGraph</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">heat</span> <span class="ow">&lt;-</span> <span class="n">enumD</span> <span class="p">(</span><span class="n">first</span> <span class="n">ht</span>                     <span class="o">.</span> <span class="n">fst</span> <span class="o">&lt;$&gt;</span> <span class="n">m</span><span class="p">)</span>
+  <span class="n">bar</span>  <span class="ow">&lt;-</span> <span class="n">enumD</span> <span class="p">(</span><span class="n">floor</span> <span class="o">.</span> <span class="p">(</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span> <span class="o">.</span> <span class="n">fromIntegral</span> <span class="o">.</span> <span class="n">lexID</span> <span class="o">.</span> <span class="n">snd</span> <span class="o">&lt;$&gt;</span> <span class="n">m</span><span class="p">)</span>
+  <span class="n">return</span> <span class="o">$</span> <span class="n">toVegaLite</span>
+    <span class="p">[</span> <span class="n">center</span> <span class="kt">True</span>
+    <span class="p">,</span> <span class="n">vConcat</span> <span class="p">[</span><span class="n">fromVL</span> <span class="p">(</span><span class="n">margHeatFromDist</span> <span class="n">heat</span><span class="p">),</span> <span class="n">fromVL</span> <span class="p">(</span><span class="n">sdBarFromDist</span> <span class="n">htrange</span> <span class="n">bar</span><span class="p">)]</span>
+    <span class="p">,</span> <span class="n">title</span> <span class="p">(</span><span class="n">pack</span> <span class="n">t</span><span class="p">)</span> <span class="kt">[]</span>
+    <span class="p">]</span>
+
+<span class="nf">vlShow</span> <span class="o">.</span> <span class="n">sidewaysDists</span> <span class="o">&lt;$&gt;</span> <span class="n">traverse</span> <span class="n">mkEqGraph</span>
+  <span class="p">[</span> <span class="p">(</span><span class="s">&quot;Literal listener (L0)&quot;</span><span class="p">,</span> <span class="n">unif</span> <span class="n">htsbill</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">n</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denEq0</span> <span class="n">n</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L0 + lex. uncertainty&quot;</span><span class="p">,</span> <span class="n">lp</span> <span class="n">infoLUMEq</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">l</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L1 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denEq0</span> <span class="mi">6</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L2 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denEq0</span> <span class="mi">6</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L3 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kt">UTall</span><span class="p">,</span> <span class="n">denEq0</span> <span class="mi">6</span><span class="p">))</span>
+  <span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13683,11 +14232,33 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span><span class="nf">writeIORef</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="p">)</span>
+
+<span class="nf">vlShow</span> <span class="o">.</span> <span class="n">sidewaysDists</span> <span class="o">&lt;$&gt;</span> <span class="n">traverse</span> <span class="n">mkEqGraph</span>
+  <span class="p">[</span> <span class="p">(</span><span class="s">&quot;Literal listener (L0)&quot;</span><span class="p">,</span> <span class="n">unif</span> <span class="n">htsbill</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">n</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denEq0</span> <span class="n">n</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L0 + lex. uncertainty&quot;</span><span class="p">,</span> <span class="n">lp</span> <span class="n">infoLUMEq</span> <span class="o">&gt;&gt;=</span> <span class="nf">\</span><span class="n">l</span> <span class="ow">-&gt;</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L1 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denEq0</span> <span class="mi">6</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L2 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denEq0</span> <span class="mi">6</span><span class="p">))</span>
+  <span class="p">,</span> <span class="p">(</span><span class="s">&quot;L3 pragmatic listener&quot;</span><span class="p">,</span> <span class="n">listener</span> <span class="n">infoLUMEq</span> <span class="n">cacheRef</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="kt">UShrt</span><span class="p">,</span> <span class="n">denEq0</span> <span class="mi">6</span><span class="p">))</span>
+  <span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    <div class="prompt"></div>
+
 
 
 
@@ -13703,6 +14274,16 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-Haskell"><pre><span></span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
     </div>
