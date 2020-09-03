@@ -8,6 +8,7 @@ import Data.Bool (bool)
 import Numeric (showFFloat)
 import Data.Ord (Down(..))
 import Data.List.Extra
+import qualified Data.Monoid (getSum, Sum(..))
 
 import Graphics.Vega.VegaLite hiding (filter, lookup, repeat)
 import qualified Graphics.Vega.VegaLite as VL (filter, lookup, repeat)
@@ -37,28 +38,39 @@ barFromDist m =
               . dataColumn "probability" (Numbers $ fmap exp ps)
 
       enc = encoding
-            . position X [PName "outcome", PmType Ordinal, PAxis [AxLabelAngle (-55)], PScale [SRangeStep (Just 30)], PSort []]
-            . position Y [PName "probability", PmType Quantitative]
+            . position X [PName "outcome", PmType Ordinal, PAxis [AxLabelAngle (-55), AxNoTitle], PScale [SRangeStep (Just 30)], PSort []]
+            . position Y [PName "probability", PmType Quantitative, PAxis [AxTitle "Prob"]]
 
   in toVegaLite [description "", dvals [], mark Bar [], enc []]
 
-sdBarFromDist :: (Ord a, Show a) => [Int] -> Dist a -> VegaLite
+sdBarFromDist :: (Ord a, Show a, Integral a) => [Int] -> Dist a -> VegaLite
 sdBarFromDist sds m =
   let (vs,ps) = unzip (toList m)
       dvals = dataFromColumns []
-              . dataColumn "sigma" (Strings $ fmap (pack . show) vs)
+              . dataColumn "sigma" (Numbers $ fmap fromIntegral vs)
               . dataColumn "prob" (Numbers $ fmap exp ps)
+              . dataColumn "exp" (Numbers $ zipWith (\p v -> exp p * fromIntegral v) ps vs)
 
       enc = encoding
-            . position X [ PName "sigma", PmType Ordinal, PAxis [AxLabelAngle (-55)], PSort []
-                         , PScale [SRangeStep (Just 30), SDomain (DStrings . fmap (pack . show) $ sds)]
+            . position X [ PName "sigma", PmType Quantitative, PAxis [AxLabelAngle (-55), AxTitle "Expected Eccentricity"], PSort []
+                         -- , PScale [SDomain (DNumbers $ fmap fromIntegral sds)]
                          ]
-            . position Y [PName "prob", PmType Quantitative]
+            . position Y [PName "prob", PmType Quantitative, PAxis [AxTitle "Prob"]]
+            
+      barplot = [description "", dvals [], mark Bar [MColor "firebrick", MOpacity 0.65], enc []]
+      barline = [description "", dvals [], mark Rule [], encoding . position X [PName "exp", PAggregate Sum] . size [MNumber 5] $ []]
+      bartext = [ description "", dvals [], mark Text [MFontSize 14, MdX 80, MdY (-80)]
+                , encoding . text [TName "exp", TAggregate Sum, TmType Quantitative, TFormat ".2f"] $ []]
 
-  in toVegaLite [description "", dvals [], mark Bar [MColor "firebrick", MOpacity 0.75], enc []]
+  in toVegaLite [layer [asSpec barplot, asSpec barline, asSpec bartext]]
 
 sidewaysDists :: [VegaLite] -> VegaLite
-sidewaysDists ms = toVegaLite [spacing 50, resolve (resolution (RScale [(ChColor, Independent)]) []), hConcat (fromVL <$> ms)]
+sidewaysDists ms =
+  toVegaLite [ spacing 50
+             , resolve (resolution (RScale [(ChColor, Independent)]) [])
+             , hConcat (fromVL <$> ms)
+             , configure . configuration (BarStyle [MContinuousBandSize 18]) $ []
+             ]
 
 titled :: String -> VegaLite -> VegaLite
 titled s v = toVegaLite [title (pack s) [], layer [fromVL v]]
@@ -98,11 +110,11 @@ margHeatFromDist m =
              . configuration (Scale [SCRectBandPaddingInner 0])
 
       enc = encoding
-            . position X [ PName "mu", PmType Ordinal, PAxis [AxLabelAngle (-55)], PSort []
-                         , PScale [SRangeStep (Just 30), SDomain (DStrings scl)]
+            . position X [ PName "mu", PmType Ordinal, PAxis [AxLabelAngle 0, AxTitle "CC Center"], PSort []
+                         , PScale [SRangeStep (Just 30), SPadding 0.05, SDomain (DStrings scl)]
                          ]
-            . position Y [ PName "ht", PmType Ordinal, PAxis [AxLabelAngle 0], PSort []
-                         , PScale [SRangeStep (Just 30), SDomain (DStrings $ reverse scl)]
+            . position Y [ PName "ht", PmType Ordinal, PAxis [AxLabelAngle 0, AxTitle "Subj Height"], PSort []
+                         , PScale [SRangeStep (Just 30), SPadding 0.05, SDomain (DStrings $ reverse scl)]
                          ]
 
       heatmap = [ mark Rect []
