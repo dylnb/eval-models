@@ -43,8 +43,8 @@ barFromDist m =
 
   in toVegaLite [description "", dvals [], mark Bar [], enc []]
 
-sdBarFromDist :: (Ord a, Show a, Integral a) => [Int] -> Dist a -> VegaLite
-sdBarFromDist sds m =
+sdBarFromDist :: (Ord a, Show a, Integral a) => [Int] -> String -> Dist a -> VegaLite
+sdBarFromDist sds t m =
   let (vs,ps) = unzip (toList m)
       dvals = dataFromColumns []
               . dataColumn "sigma" (Numbers $ fmap fromIntegral vs)
@@ -52,14 +52,15 @@ sdBarFromDist sds m =
               . dataColumn "exp" (Numbers $ zipWith (\p v -> exp p * fromIntegral v) ps vs)
 
       enc = encoding
-            . position X [ PName "sigma", PmType Quantitative, PAxis [AxLabelAngle (-55), AxTitle "Expected Eccentricity"], PSort []
+            . position X [ PName "sigma", PmType Quantitative
+                         , PAxis [{- AxLabelAngle (-55),-} AxTitle (pack $ "Expected " ++ t)], PSort []
                          -- , PScale [SDomain (DNumbers $ fmap fromIntegral sds)]
                          ]
             . position Y [PName "prob", PmType Quantitative, PAxis [AxTitle "Prob"]]
             
-      barplot = [description "", dvals [], mark Bar [MColor "firebrick", MOpacity 0.65], enc []]
+      barplot = [description "", dvals [], width 150, mark Bar [MColor "firebrick", MOpacity 0.65], enc []]
       barline = [description "", dvals [], mark Rule [], encoding . position X [PName "exp", PAggregate Sum] . size [MNumber 5] $ []]
-      bartext = [ description "", dvals [], mark Text [MFontSize 14, MdX 80, MdY (-80)]
+      bartext = [ description "", dvals [], mark Text [MFontSize 14, MdX 60, MdY (-80)]
                 , encoding . text [TName "exp", TAggregate Sum, TmType Quantitative, TFormat ".2f"] $ []]
 
   in toVegaLite [layer [asSpec barplot, asSpec barline, asSpec bartext]]
@@ -69,7 +70,7 @@ sidewaysDists ms =
   toVegaLite [ spacing 50
              , resolve (resolution (RScale [(ChColor, Independent)]) [])
              , hConcat (fromVL <$> ms)
-             , configure . configuration (BarStyle [MContinuousBandSize 18]) $ []
+             , configure . configuration (BarStyle [MContinuousBandSize 13.5]) $ []
              ]
 
 titled :: String -> VegaLite -> VegaLite
