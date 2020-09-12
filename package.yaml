@@ -1,10 +1,10 @@
 name:                eval-models
 version:             0.1.0.0
-github:              "dylnb/evaluativity-models"
+github:              "dylnb/eval-models"
 license:             BSD3
 author:              "Dylan Bumford"
 maintainer:          "example@example.com"
-copyright:           "2019 Dylan Bumford"
+copyright:           "2020 Dylan Bumford"
 
 extra-source-files:
 - README.md
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/dylnb/evaluativity-models#readme>
+description:         Please see the README on GitHub at <https://github.com/dylnb/eval-models#readme>
 
 dependencies:
 - base >= 4.7 && < 5
@@ -30,27 +30,5 @@ dependencies:
 - mwc-probability
 - monad-memo
 
-library:
-  source-dirs: src
-
-# executables:
-  # eval-models-exe:
-  #   main:                Main.hs
-  #   source-dirs:         app
-  #   ghc-options:
-  #   - -threaded
-  #   - -rtsopts
-  #   - -with-rtsopts=-N
-  #   dependencies:
-  #   - eval-models
-
-tests:
-  eval-models-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - eval-models
+# library:
+#   source-dirs: src

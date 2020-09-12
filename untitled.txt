@@ -1,6 +1,0 @@
-Notes on embedded implicature
-
-P(X | A and B) ~ P(X | A)P(X | B)
-P(X | A or B): s <- unif [A,B]; w <- unif universe; observe (listener s) w; return w
-P(X | ~ A) ~? P(X | B1 or B2 or ... Bn), where A competes with B1 ... Bn
-P(X | ) 
