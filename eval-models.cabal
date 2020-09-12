@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3919e86eb2e62f3eb316edca94d54c0dd4c6ada72cd53975553d03021e572974
+-- hash: 0f6b720fe626f352136fce44d96009d8208f7d3309056bcb32cb092b66f797f3
 
 name:           eval-models
 version:        0.1.0.0
@@ -23,3 +23,21 @@ extra-source-files:
 source-repository head
   type: git
   location: https://github.com/dylnb/eval-models
+
+library
+  exposed-modules:
+      Utils
+  other-modules:
+      Paths_eval_models
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , extra
+    , hvega
+    , ihaskell-hvega
+    , monad-memo
+    , mwc-probability
+    , text
+    , tyche
+  default-language: Haskell2010

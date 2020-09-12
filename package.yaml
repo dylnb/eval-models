@@ -30,5 +30,5 @@ dependencies:
 - mwc-probability
 - monad-memo
 
-# library:
-#   source-dirs: src
+library:
+  source-dirs: src
